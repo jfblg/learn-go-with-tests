@@ -16,3 +16,5 @@ go test -v
 ```
 got test -bench="."
 ```
+
+A struct is just a named collection of fields where you can store data. 
