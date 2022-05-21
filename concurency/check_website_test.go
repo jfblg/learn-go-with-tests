@@ -30,7 +30,7 @@ func BenchmarkWebsiteChecker(b *testing.B) {
 	}
 }
 
-func testWebsiteChecker(t *testing.T) {
+func TestCheckWebsites(t *testing.T) {
 
 	websites := []string{
 		"http://google.com",
