@@ -2,9 +2,11 @@ go 1.18
 
 use (
 	./maps
-    ./mocking
+	./mocking
 	./pointers
-    ./dependency
-    ./concurency
-    ./sel
+	./dependency
+	./concurency
+	./sel
+	./reflection
+	./synch
 )
