@@ -10,4 +10,6 @@ use (
 	./reflection
 	./synch
 	./context1
+	./propertytests
+	./files
 )

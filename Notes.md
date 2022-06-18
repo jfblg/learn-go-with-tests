@@ -51,3 +51,11 @@ var dictionary = make(map[string]string)
 ```
 
 
+# bufio
+scanner := bufio.NewScanner(filename)
+scanner.Scan()
+lineFromFile := scanner.Text()
+
+# strings
+lineWithoutPrefix := strings.TrimPrefix(line, prefix)
+
