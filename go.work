@@ -12,4 +12,5 @@ use (
 	./context1
 	./propertytests
 	./files
+	./blogrenderer
 )
