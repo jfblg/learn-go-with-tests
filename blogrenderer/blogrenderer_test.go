@@ -3,6 +3,7 @@ package blogrenderer_test
 import (
 	blogrenderer "blogrenderer"
 	"bytes"
+	"github.com/approvals/go-approval-tests"
 	"testing"
 )
 
@@ -17,19 +18,22 @@ func TestRenderer(t *testing.T) {
 	)
 	t.Run("it converts a single post into HTML", func(t *testing.T) {
 		buf := bytes.Buffer{}
-		err := blogrenderer.Render(&buf, aPost)
 
-		if err != nil {
+		if err := blogrenderer.Render(&buf, aPost); err != nil {
 			t.Fatal(err)
 		}
 
-		got := buf.String()
-		want := `<h1>hello world</h1>
-	<p>This is a description</p>
-	Tags: <ul><li>go</li><li>tdd</li></ul>`
+		approvals.VerifyString(t, buf.String())
 
-		if got != want {
-			t.Errorf("got '%s' want '%s'", got, want)
+	})
+	t.Run("it renders an index of posts", func(t *testing.T) {
+		buf := bytes.Buffer{}
+		posts := []blogrenderer.Post{{Title: "Hello World"}, {Title: "Hello Worlds 2"}}
+
+		if err := postRenderer.RenderIndex(&buf, posts); err != nil {
+			t.Fatal(err)
 		}
+
+		approvals.VerifyString(t, buf.String())
 	})
 }

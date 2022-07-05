@@ -13,4 +13,5 @@ use (
 	./propertytests
 	./files
 	./blogrenderer
+	./generics
 )

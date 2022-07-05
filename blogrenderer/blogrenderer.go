@@ -1,12 +1,15 @@
 package blogrenderer
 
 import (
+	"embed"
+	"html/template"
 	"io"
-	"text/template"
+	"strings"
 )
 
-const (
-	postTemplate = `<h1>{{.Title}}</h1><p>{{.Description}}</p>Tags: <ul>{{range .Tags}}<li>{{.}}</li>{{end}}</ul>`
+var (
+	//go:embed "templates/*"
+	postTemplates embed.FS
 )
 
 type Post struct {
@@ -14,15 +17,27 @@ type Post struct {
 	Tags                     []string
 }
 
-func Render(w io.Writer, p Post) error {
-	templ, err := template.New("blog").Parse(postTemplate)
+type PostRenderer struct {
+	templ *template.Template
+}
+
+func NewPostRender() (*PostRenderer, error) {
+	templ, err := template.ParseFS(postTemplates, "templates/*.gohtml")
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
-	if err := templ.Execute(w, p); err != nil {
-		return err
-	}
+	return &PostRenderer{templ: templ}, nil
+}
 
-	return nil
+func (r *PostRenderer) Render(w io.Writer, p Post) error {
+	return r.templ.ExecuteTemplate(w, "blog.gohtml", p)
+}
+
+func (r *PostRenderer) RenderIndex(w io.Writer, posts []Post) error {
+	return r.templ.ExecuteTemplate(w, "index.gohtnml")
+}
+
+func (p Post) SanitizedTitlle() string {
+	return strings.ToLower(strings.Replace(p.Title, " ", "-", -1))
 }
